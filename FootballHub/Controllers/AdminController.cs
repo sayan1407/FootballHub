@@ -82,6 +82,17 @@ namespace FootballHub.Controllers
             }
             return View(player);
         }
+        [HttpGet]
+        public IActionResult UpdatePlayerStats(int playerId)
+        {
+            var player = _db.Players.FirstOrDefault(p => p.Id == playerId);
+            return View(player);
+        }
+        [HttpPost]
+        public IActionResult UpdatePlayerStats()
+        {
+            return View();
+        }
 
     }
 }

@@ -1,0 +1,30 @@
+﻿@model Player
+<h1>@Model.Name</h1>
+<form method="post">
+    <input asp-for="Id" hidden />
+    <table class="table" id="tblStats">
+        <thead>
+            <tr>
+                <th>Season</th>
+                <th>Apps</th>
+                <th>Goals</th>
+                <th>Assists</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <button class="btn btn-primary" id="btnAddRow" type="button">Add Row</button>
+    <input type="submit" class="btn btn-primary" />
+</form>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            $("#btnAddRow").click(function () {
+                $("#tblStats tbody").append("<tr><td><input type='text' id='txtSeason' name='txtSeason' /></td> <td><input type='text' id = 'txtApps' name='txtApps' /></td> <td><input type='text' id = 'txtGoals' name = 'txtGoals'/></td> <td><input type='text' id='txtAssists' name='txtAssists' /></td> </tr>");
+            });
+        })
+    </script>
+}

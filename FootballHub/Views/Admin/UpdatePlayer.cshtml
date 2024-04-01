@@ -18,6 +18,7 @@
                 <td>@player.Name</td>
                 <td>
                     <a  asp-action="UpdatePlayerData" asp-route-id="@player.Id" class="btn btn-primary">Update</a>
+                    <a asp-action="UpdatePlayerStats" asp-route-playerId="@player.Id" class="btn btn-primary">Update Stats</a>
                 </td>
             </tr>
         }
