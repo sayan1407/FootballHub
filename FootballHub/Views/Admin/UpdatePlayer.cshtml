@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Player>
+
+@{
+    ViewData["title"] = "Update Player";
+}
+
+<table class="table" id="UpdatePlayerTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var player in Model)
+        {
+            <tr>
+                <td>@player.Name</td>
+                <td>
+                    <a  asp-action="UpdatePlayerData" asp-route-id="@player.Id" class="btn btn-primary">Update</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            let table = new DataTable('#UpdatePlayerTable');
+
+        })
+
+    </script>
+}
