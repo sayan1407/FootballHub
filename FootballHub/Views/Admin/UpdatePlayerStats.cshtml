@@ -1,7 +1,8 @@
-﻿@model Player
-<h1>@Model.Name</h1>
+﻿@model StatsVM
+<h1>@Model.Player.Name</h1>
 <form method="post">
-    <input asp-for="Id" hidden />
+    <input id="PlayerId" asp-for="Player.Id" hidden />
+   
     <table class="table" id="tblStats">
         <thead>
             <tr>
@@ -12,19 +13,62 @@
             </tr>
         </thead>
         <tbody>
+           @*@foreach(var stat in Model.Stats)
+            {
+                <tr>
+                    <td><input asp-for="@stat.Season" /></td>
+                    <td><input asp-for="@stat.Apps"  /></td>
+                    <td><input asp-for="@stat.Goals" /></td>
+                    <td><input asp-for="@stat.Assists"  /></td>
+                </tr>
+            }*@
+            @for (var i = 0; i < Model.Stats.Count; i++)
+            {
+                
+                <tr>
+                    <input asp-for="@Model.Stats[i].Id" name="Stats[@i].Id" hidden />
+                    <input asp-for="@Model.Stats[i].PlayerId" name="Stats[@i].PlayerId" hidden />
+                    <td><input asp-for="@Model.Stats[i].Season" name="Stats[@i].Season" disabled/></td>
+                    <input asp-for="@Model.Stats[i].Season" name="Stats[@i].Season" hidden />
+                    <td><input asp-for="@Model.Stats[i].Apps" name="Stats[@i].Apps"  disabled/></td>
+                    <input asp-for="@Model.Stats[i].Apps" name="Stats[@i].Apps" hidden />
+                    <td><input asp-for="@Model.Stats[i].Goals" name="Stats[@i].Goals"  disabled/></td>
+                    <input asp-for="@Model.Stats[i].Goals" name="Stats[@i].Goals" hidden />
+                    <td><input asp-for="@Model.Stats[i].Assists" name="Stats[@i].Assists" disabled /></td>
+                    <input asp-for="@Model.Stats[i].Assists" name="Stats[@i].Assists" hidden />
+                </tr>
+            }
         </tbody>
     </table>
     <button class="btn btn-primary" id="btnAddRow" type="button">Add Row</button>
-    <input type="submit" class="btn btn-primary" />
+    <button class="btn btn-danger" id="btnDeleteRow" type="button" disabled>Delete Row</button>
+    <button class="btn btn-primary" asp-action="Back" type="submit" >Back</button>
+    <input type="submit" class="btn btn-primary" value="Save"/>
 </form>
 
 
 @section Scripts{
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
+            var rowAdded = 0;
+                   
             $("#btnAddRow").click(function () {
-                $("#tblStats tbody").append("<tr><td><input type='text' id='txtSeason' name='txtSeason' /></td> <td><input type='text' id = 'txtApps' name='txtApps' /></td> <td><input type='text' id = 'txtGoals' name = 'txtGoals'/></td> <td><input type='text' id='txtAssists' name='txtAssists' /></td> </tr>");
+                rowAdded++;
+                $("#btnDeleteRow").attr("disabled", false);
+                var playerId = $("#PlayerId").val();
+                var index = $("#tblStats tbody tr").length;;
+                $("#tblStats tbody").append("<tr><input id='Stats[" + index + "].Id' name='Stats[" + index + "].Id' value='0' type='hidden' /><input id='Stats[" + index + "].PlayerId' name='Stats[" + index + "].PlayerId' value='"+playerId+"' type='hidden' /><td><input type='text' id='Stats[" + index + "].Season' name='Stats[" + index + "].Season' /></td> <td><input type='text' id = 'Stats[" + index + "].Apps' name='Stats[" + index + "].Apps' /></td> <td><input type='text' id = 'Stats[" + index + "].Goals' name = 'Stats[" + index + "].Goals'/></td> <td><input type='text' id='Stats[" + index + "].Assists' name='Stats[" + index + "].Assists' /></td> </tr>");
             });
+            $("#btnDeleteRow").click(function () {
+                rowAdded--;
+                var lastRow = $("#tblStats tbody tr").last();
+                var disabledInputs = lastRow.find("input:disabled");
+               
+                if (disabledInputs.length == 0)
+                    lastRow.remove();
+                if (rowAdded == 0)
+                    $("#btnDeleteRow").attr("disabled", true);
+            })
         })
     </script>
 }

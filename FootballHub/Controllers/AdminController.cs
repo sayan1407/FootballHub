@@ -1,6 +1,7 @@
 ﻿using FootballHub.Data;
 using FootballHub.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FootballHub.Controllers
 {
@@ -85,13 +86,44 @@ namespace FootballHub.Controllers
         [HttpGet]
         public IActionResult UpdatePlayerStats(int playerId)
         {
+            
             var player = _db.Players.FirstOrDefault(p => p.Id == playerId);
-            return View(player);
+            if (player == null)
+                return NotFound();
+            var statsVM = new StatsVM()
+            {
+                Player = player,
+                Stats = _db.Stats.Include(s => s.Player).Where(s => s.PlayerId == playerId).ToList()
+            };
+            return View(statsVM);
         }
         [HttpPost]
-        public IActionResult UpdatePlayerStats()
+        public IActionResult UpdatePlayerStats(StatsVM statsVM)
         {
-            return View();
+            
+            if(ModelState.IsValid)
+            {
+                int playerId = statsVM.Player.Id;
+                foreach (var stat in statsVM.Stats)
+                {
+                    stat.PlayerId = playerId;
+                    if (stat.Id == 0)
+                        _db.Stats.Add(stat);
+                   
+                }
+                _db.SaveChanges();
+            }
+            var newStatsVM = new StatsVM()
+            {
+                Player = statsVM.Player,
+                Stats = _db.Stats.Include(s => s.Player).Where(s => s.PlayerId == statsVM.Player.Id).ToList()
+            };
+            return View(newStatsVM);
+        }
+        [HttpPost]
+        public IActionResult Back()
+        {
+            return RedirectToAction(nameof(UpdatePlayer));
         }
 
     }

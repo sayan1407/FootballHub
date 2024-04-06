@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FootballHub.Models
 {
@@ -11,6 +12,7 @@ namespace FootballHub.Models
         public int Apps { get; set; }
         public int Goals { get; set; }
         public int Assists { get; set; }
+        [ValidateNever]
         public Player Player { get; set; }
     }
 }
