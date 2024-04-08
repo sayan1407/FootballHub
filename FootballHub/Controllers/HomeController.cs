@@ -21,7 +21,16 @@ namespace FootballHub.Controllers
             var playerList = _db.Players;
             return View(playerList);
         }
-
+        [HttpGet]
+        public IActionResult Profile(int id)
+        {
+            var statVM = new StatsVM()
+            {
+                Player = _db.Players.Single(p => p.Id == id),
+                Stats = _db.Stats.Where(s => s.PlayerId == id).ToList()
+            };
+            return View(statVM);
+        }
         public IActionResult Privacy()
         {
             return View();
