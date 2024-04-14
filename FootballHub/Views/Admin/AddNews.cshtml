@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["title"] = "Add News";
+}
+@model News
+<div class="row">
+    <div class="col-6 border">
+        <form enctype="multipart/form-data">
+            <div class="mb-3">
+                <label asp-for="Headline" class="form-label"></label>
+                <input asp-for="Headline" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="ShortSummary" class="form-label"></label>
+                <textarea asp-for="ShortSummary" class="form-control"></textarea>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Summary" class="form-label"></label>
+                <textarea asp-for="Summary" class="form-control"></textarea>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageUrl" class="form-label"></label>
+                <input type="file" class="form-control" id="PlayerImage" name="PlayerImage" />
+            </div>
+            <div class="mb-3">
+                <input type="submit" class="btn btn-primary" />
+
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript"
+            src='https://cdn.tiny.cloud/1/pt86y9xhv237hrew3wgg5cvnwtt5ori02dumvprk0ois2r0u/tinymce/7/tinymce.min.js'
+            referrerpolicy="origin">
+    </script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '#Summary',
+            width: 600,
+            height: 300,
+            plugins: [
+                'advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'preview', 'anchor', 'pagebreak',
+                'searchreplace', 'wordcount', 'visualblocks', 'visualchars', 'code', 'fullscreen', 'insertdatetime',
+                'media', 'table', 'emoticons', 'help'
+            ],
+            toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist outdent indent | link image | print preview media fullscreen | ' +
+                'forecolor backcolor emoticons | help',
+            menu: {
+                favs: { title: 'My Favorites', items: 'code visualaid | searchreplace | emoticons' }
+            },
+            menubar: 'favs file edit view insert format tools table help',
+            content_css: 'css/content.css'
+        });
+    </script>
+}

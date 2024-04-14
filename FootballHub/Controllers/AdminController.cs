@@ -125,6 +125,11 @@ namespace FootballHub.Controllers
         {
             return RedirectToAction(nameof(UpdatePlayer));
         }
+        [HttpGet]
+        public IActionResult AddNews()
+        {
+            return View();
+        }
 
     }
 }

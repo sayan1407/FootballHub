@@ -11,5 +11,6 @@ namespace FootballHub.Data
         }
         public DbSet<Player> Players { get; set; }
         public DbSet<Stats> Stats { get; set; }
+        public DbSet<News> News { get; set; }
     }
 }
