@@ -31,6 +31,11 @@ namespace FootballHub.Controllers
             };
             return View(statVM);
         }
+        public IActionResult News()
+        {
+            var lstNews = _db.News.ToList();
+            return View(lstNews);
+        }
         public IActionResult Privacy()
         {
             return View();
