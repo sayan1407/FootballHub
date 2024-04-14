@@ -130,6 +130,28 @@ namespace FootballHub.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult AddNews(News news,IFormFile newsImage)
+        {
+            string rootDirectory = _host.WebRootPath;
+            if(ModelState.IsValid)
+            {
+                if(newsImage != null)
+                {
+                    string fileName = Guid.NewGuid().ToString()+"_"+newsImage.FileName;
+                    string filePath = Path.Combine(rootDirectory, "NewsImage", fileName);
+                    using(var stream = new FileStream(filePath,FileMode.Create))
+                    {
+                        newsImage.CopyTo(stream);
+                    }
+                    news.ImageUrl = fileName;
+                }
+                _db.News.Add(news);
+                _db.SaveChanges();
+                return RedirectToAction("Index","Home");
+            }
+            return View();
+        }
 
     }
 }

@@ -4,22 +4,26 @@
 @model News
 <div class="row">
     <div class="col-6 border">
-        <form enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <form method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label asp-for="Headline" class="form-label"></label>
                 <input asp-for="Headline" class="form-control" />
+                <span asp-validation-for="Headline" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="ShortSummary" class="form-label"></label>
                 <textarea asp-for="ShortSummary" class="form-control"></textarea>
+                <span asp-validation-for="ShortSummary" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Summary" class="form-label"></label>
                 <textarea asp-for="Summary" class="form-control"></textarea>
+                <span asp-validation-for="Summary" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="ImageUrl" class="form-label"></label>
-                <input type="file" class="form-control" id="PlayerImage" name="PlayerImage" />
+                <input type="file" class="form-control" id="newsImage" name="newsImage" />
             </div>
             <div class="mb-3">
                 <input type="submit" class="btn btn-primary" />
