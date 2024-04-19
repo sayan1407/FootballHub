@@ -9,7 +9,7 @@ namespace FootballHub.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _db;
-
+        
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
         {
             _logger = logger;
@@ -31,10 +31,18 @@ namespace FootballHub.Controllers
             };
             return View(statVM);
         }
-        public IActionResult News()
+        [HttpGet]
+        public IActionResult News(int pageNumber = 1)
         {
-            var lstNews = _db.News.ToList();
-            return View(lstNews);
+            int pageSize = 3;
+            var newsPagination = new NewsPagination()
+            {
+                NewsList = _db.News.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(),
+                CurrentPage = pageNumber,
+                LastPage = Math.Ceiling(Convert.ToDecimal(_db.News.Count()) / pageSize)
+            };
+            
+            return View(newsPagination);
         }
         [HttpGet]
         public IActionResult FullNews(int id)
