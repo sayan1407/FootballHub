@@ -36,6 +36,16 @@ namespace FootballHub.Controllers
             var lstNews = _db.News.ToList();
             return View(lstNews);
         }
+        [HttpGet]
+        public IActionResult FullNews(int id)
+        {
+            News news = _db.News.SingleOrDefault(s => s.Id == id);
+            if(news == null)
+            {
+                return NotFound();
+            }
+            return View(news);
+        }
         public IActionResult Privacy()
         {
             return View();
