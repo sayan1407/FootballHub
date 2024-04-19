@@ -37,7 +37,7 @@ namespace FootballHub.Controllers
             int pageSize = 3;
             var newsPagination = new NewsPagination()
             {
-                NewsList = _db.News.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(),
+                NewsList = _db.News.OrderByDescending(n => n.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList(),
                 CurrentPage = pageNumber,
                 LastPage = Math.Ceiling(Convert.ToDecimal(_db.News.Count()) / pageSize)
             };

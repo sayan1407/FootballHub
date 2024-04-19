@@ -7,5 +7,6 @@
         public string ShortSummary { get; set; }
         public string Summary { get; set; }
         public string? ImageUrl { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
     }
 }
