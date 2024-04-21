@@ -12,6 +12,8 @@ namespace FootballHub.Models
         public int Apps { get; set; }
         public int Goals { get; set; }
         public int Assists { get; set; }
+        public int YellowCard { get; set; }
+        public int RedCard { get; set; }
         [ValidateNever]
         public Player Player { get; set; }
     }
