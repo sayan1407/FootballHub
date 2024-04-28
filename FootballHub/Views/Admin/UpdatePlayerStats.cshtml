@@ -1,8 +1,11 @@
-﻿@model StatsVM
+﻿@using Newtonsoft.Json;
+@model StatsVM
 <h1>@Model.Player.Name</h1>
+
 <form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input id="PlayerId" asp-for="Player.Id" hidden />
-   
+    
     <table class="table" id="tblStats">
         <thead>
             <tr>
@@ -10,6 +13,8 @@
                 <th>Apps</th>
                 <th>Goals</th>
                 <th>Assists</th>
+                <th><img src="https://ssl.gstatic.com/onebox/sports/game_feed/yellow_card_icon.svg" /></th>
+                <th><img src="https://ssl.gstatic.com/onebox/sports/game_feed/red_card_icon.svg" /></th>
             </tr>
         </thead>
         <tbody>
@@ -24,18 +29,48 @@
             }*@
             @for (var i = 0; i < Model.Stats.Count; i++)
             {
+                string modelJson = JsonConvert.SerializeObject(Model.Stats[i]);
                 
                 <tr>
-                    <input asp-for="@Model.Stats[i].Id" name="Stats[@i].Id" hidden />
-                    <input asp-for="@Model.Stats[i].PlayerId" name="Stats[@i].PlayerId" hidden />
-                    <td><input asp-for="@Model.Stats[i].Season" name="Stats[@i].Season" disabled/></td>
-                    <input asp-for="@Model.Stats[i].Season" name="Stats[@i].Season" hidden />
-                    <td><input asp-for="@Model.Stats[i].Apps" name="Stats[@i].Apps"  disabled/></td>
-                    <input asp-for="@Model.Stats[i].Apps" name="Stats[@i].Apps" hidden />
-                    <td><input asp-for="@Model.Stats[i].Goals" name="Stats[@i].Goals"  disabled/></td>
-                    <input asp-for="@Model.Stats[i].Goals" name="Stats[@i].Goals" hidden />
-                    <td><input asp-for="@Model.Stats[i].Assists" name="Stats[@i].Assists" disabled /></td>
-                    <input asp-for="@Model.Stats[i].Assists" name="Stats[@i].Assists" hidden />
+                    
+                    <td>
+                        <input asp-for="@Model.Stats[i].Id" name="Stats[@i].Id" hidden />
+                        <input asp-for="@Model.Stats[i].PlayerId" name="Stats[@i].PlayerId" hidden />
+                        <input asp-for="@Model.Stats[i].Season" name="Stats[@i].Season" disabled/>
+                        <input asp-for="@Model.Stats[i].Season" name="Stats[@i].Season" hidden />
+                    </td>
+                    
+                    <td>
+                        
+                        <input asp-for="@Model.Stats[i].Apps" name="Stats[@i].Apps"  disabled/>
+                        <input asp-for="@Model.Stats[i].Apps" name="Stats[@i].Apps" hidden />
+                    </td>
+                    
+                    <td>
+                        <input asp-for="@Model.Stats[i].Goals" name="Stats[@i].Goals"  disabled/>
+                        <input asp-for="@Model.Stats[i].Goals" name="Stats[@i].Goals" hidden />
+                    </td>
+                    
+                    <td>
+                        <input asp-for="@Model.Stats[i].Assists" name="Stats[@i].Assists" disabled />
+                        <input asp-for="@Model.Stats[i].Assists" name="Stats[@i].Assists" hidden />
+                    </td>
+
+                    <td>
+                        <input asp-for="@Model.Stats[i].YellowCard" name="Stats[@i].YellowCard" disabled />
+                        <input asp-for="@Model.Stats[i].YellowCard" name="Stats[@i].YellowCard" hidden />
+                    </td>
+
+                    <td>
+                        <input asp-for="@Model.Stats[i].RedCard" name="Stats[@i].RedCard" disabled />
+                        <input asp-for="@Model.Stats[i].RedCard" name="Stats[@i].RedCard" hidden />
+                    </td>
+                    
+                    <td>
+                        <button  class="btn btn-primary btnUpdateData" type="button">Update Data</button>
+                        <button class="btn btn-primary btnSaveData" asp-action="UpdateStats" asp-route-statsId="@Model.Stats[i].Id" type="submit" hidden>Save Data</button>
+                    </td>
+                   
                 </tr>
             }
         </tbody>
@@ -48,6 +83,12 @@
 
 
 @section Scripts{
+   
+    @{
+        <partial name="_ValidationScriptsPartial.cshtml" />
+
+    }
+
     <script>
         $(document).ready(function () {
             var rowAdded = 0;
@@ -57,18 +98,27 @@
                 $("#btnDeleteRow").attr("disabled", false);
                 var playerId = $("#PlayerId").val();
                 var index = $("#tblStats tbody tr").length;;
-                $("#tblStats tbody").append("<tr><input id='Stats[" + index + "].Id' name='Stats[" + index + "].Id' value='0' type='hidden' /><input id='Stats[" + index + "].PlayerId' name='Stats[" + index + "].PlayerId' value='"+playerId+"' type='hidden' /><td><input type='text' id='Stats[" + index + "].Season' name='Stats[" + index + "].Season' /></td> <td><input type='text' id = 'Stats[" + index + "].Apps' name='Stats[" + index + "].Apps' /></td> <td><input type='text' id = 'Stats[" + index + "].Goals' name = 'Stats[" + index + "].Goals'/></td> <td><input type='text' id='Stats[" + index + "].Assists' name='Stats[" + index + "].Assists' /></td> </tr>");
+                $("#tblStats tbody").append("<tr><input id='Stats[" + index + "].Id' name='Stats[" + index + "].Id' value='0' type='hidden' /><input id='Stats[" + index + "].PlayerId' name='Stats[" + index + "].PlayerId' value='" + playerId + "' type='hidden' /><td><input type='text' id='Stats[" + index + "].Season' name='Stats[" + index + "].Season' /></td> <td><input type='text' id = 'Stats[" + index + "].Apps' name='Stats[" + index + "].Apps' /></td> <td><input type='text' id = 'Stats[" + index + "].Goals' name = 'Stats[" + index + "].Goals'/></td> <td><input type='text' id='Stats[" + index + "].Assists' name='Stats[" + index + "].Assists' /></td> <td><input type='text' id='Stats[" + index + "].YellowCard' name='Stats[" + index + "].YellowCard' /></td> <td><input type='text' id='Stats[" + index + "].RedCard' name='Stats[" + index + "].RedCard' /></td> </tr>");
             });
             $("#btnDeleteRow").click(function () {
                 rowAdded--;
                 var lastRow = $("#tblStats tbody tr").last();
                 var disabledInputs = lastRow.find("input:disabled");
-               
+
                 if (disabledInputs.length == 0)
                     lastRow.remove();
                 if (rowAdded == 0)
                     $("#btnDeleteRow").attr("disabled", true);
+            });
+            $(".btnUpdateData").click(function () {
+                var parentRow = $(this).parents('tr');
+                
+                $(parentRow).find("input").attr("disabled", false);
+                $(this).attr("hidden",true);
+                $(parentRow).find(".btnSaveData").attr("hidden", false);
+                
             })
         })
+        
     </script>
 }

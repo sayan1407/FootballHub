@@ -2,6 +2,7 @@
 using FootballHub.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace FootballHub.Controllers
 {
@@ -81,6 +82,7 @@ namespace FootballHub.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
+           
             return View(player);
         }
         [HttpGet]
@@ -113,12 +115,27 @@ namespace FootballHub.Controllers
                 }
                 _db.SaveChanges();
             }
+            else
+            {
+                ModelState.AddModelError("", "Entered stat data is not in correct order");
+            }
             var newStatsVM = new StatsVM()
             {
                 Player = statsVM.Player,
                 Stats = _db.Stats.Include(s => s.Player).Where(s => s.PlayerId == statsVM.Player.Id).ToList()
             };
             return View(newStatsVM);
+        }
+        [HttpPost]
+        public IActionResult UpdateStats(StatsVM statsVM,int statsId)
+        {
+            Stats modelStats = statsVM.Stats.First(s => s.Id == statsId);
+            if (modelStats.Id != 0)
+            {
+                _db.Stats.Update(modelStats);
+                _db.SaveChanges();
+            }
+            return RedirectToAction("UpdatePlayerStats", new { playerId = modelStats.PlayerId});
         }
         [HttpPost]
         public IActionResult Back()
