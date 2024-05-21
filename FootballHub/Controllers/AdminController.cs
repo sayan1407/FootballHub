@@ -1,11 +1,13 @@
 ﻿using FootballHub.Data;
 using FootballHub.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace FootballHub.Controllers
 {
+    [Authorize(Roles ="SUPERUSER")]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _db;

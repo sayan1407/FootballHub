@@ -8,10 +8,12 @@ namespace FootballHub.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
 
         }
         [HttpGet]
@@ -28,9 +30,12 @@ namespace FootballHub.Controllers
                 {
                     Email = registerVM.Email,
                     UserName = registerVM.UserName,
+                    
 
                 };
+                
                 var result = await _userManager.CreateAsync(user,registerVM.Password);
+               
                 if(result.Succeeded)
                 {
                   await  _signInManager.SignInAsync(user, isPersistent: false);
@@ -56,6 +61,13 @@ namespace FootballHub.Controllers
                var result =  await _signInManager.PasswordSignInAsync(loginVM.UserName, loginVM.Password, false, false);
                 if(result.Succeeded)
                 {
+                    //Temporary code to create superuser
+                    //await _roleManager.CreateAsync(new IdentityRole()
+                    //{
+                    //    Name = "SUPERUSER"
+                    //});
+                    //var userInDb = _userManager.Users.Single(u => u.UserName == loginVM.UserName);
+                    //var r = await _userManager.AddToRoleAsync(userInDb, "SUPERUSER");
                     if (!string.IsNullOrEmpty(ReturnUrl))
                         return LocalRedirect(ReturnUrl);
                     return RedirectToAction("Index", "Home");
