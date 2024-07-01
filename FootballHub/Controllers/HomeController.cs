@@ -21,6 +21,23 @@ namespace FootballHub.Controllers
             var playerList = _db.Players;
             return View(playerList);
         }
+        [HttpPost]
+        public IActionResult SearchPlayer(string searchPlayer)
+        {
+            IQueryable<Player> playerList;
+            if (string.IsNullOrEmpty(searchPlayer))
+            {
+                playerList = _db.Players;
+
+            }
+            else
+            {
+                playerList = _db.Players.Where(p => p.Name.ToLower().Contains(searchPlayer.ToLower().Trim()));
+
+            }
+            
+            return View("Index",playerList);
+        }
         [HttpGet]
         public IActionResult Profile(int id)
         {
@@ -64,6 +81,17 @@ namespace FootballHub.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        [HttpGet]
+        public JsonResult GetPlayersName(string query)
+        {
+            
+            List<Player> playerList = _db.Players.ToList();
+            if (!string.IsNullOrEmpty(query))
+            {
+                playerList = playerList.Where(p => p.Name.ToLower().Contains(query.Trim().ToLower())).ToList();
+            }
+            return Json(playerList);
         }
     }
 }

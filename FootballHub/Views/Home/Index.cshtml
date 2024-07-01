@@ -3,6 +3,20 @@
 }
 @model IEnumerable<Player>
 
+<form method="post">
+    <div class="row m-4">
+        <div class="col-md-2">
+            <input type="text" placeholder="search player" class="form-control" id="searchPlayer" name="searchPlayer" />
+        </div>
+        <div class="col-md-2">
+            <input type="submit" asp-action="SearchPlayer" class="btn btn-primary"/>
+
+        </div>
+    </div>
+
+</form>
+    
+
 
 <div class="row">
 @foreach(var player in Model)
@@ -24,4 +38,34 @@
     </div>
 }
 </div>
+
+@section Scripts{
+    <script src="~/js/typehead.js"></script>
+    <script>
+        $(document).ready(function () {
+            var players = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+                remote: {
+                    url: '/Home/GetPlayersName?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#searchPlayer').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 3
+            },
+                {
+                name: 'players',
+                display: 'name',
+                source: players
+            });
+        }) 
+        
+        
+    </script>
+}
 
