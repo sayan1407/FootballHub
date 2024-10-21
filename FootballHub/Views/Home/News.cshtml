@@ -5,10 +5,10 @@
        @foreach(var news in Model.NewsList)
         {
             <div class="row border bg-light mb-3">
-                <div class="col-3 py-2">
+                <div class="col-md-3 py-2">
                     <img src="~/NewsImage/@news.ImageUrl" width="300px" height="250px" alt="News">
                 </div>
-                <div class="col-9 py-3">
+                <div class="col-md-9 py-3">
                     <h2>@news.Headline</h2>
                     <p>
                         @news.ShortSummary
