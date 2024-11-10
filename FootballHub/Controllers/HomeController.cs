@@ -1,6 +1,7 @@
 ﻿using FootballHub.Data;
 using FootballHub.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace FootballHub.Controllers
@@ -92,6 +93,11 @@ namespace FootballHub.Controllers
                 playerList = playerList.Where(p => p.Name.ToLower().Contains(query.Trim().ToLower())).ToList();
             }
             return Json(playerList);
+        }
+        public IActionResult GetFixtures()
+        {
+            var fixtures = _db.Fixtures.Include(f => f.Opponent).Where(f => f.MatchTime > DateTime.Now).OrderBy(f => f.MatchTime).ToList();
+            return View(fixtures);
         }
     }
 }

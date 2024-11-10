@@ -58,7 +58,7 @@ namespace FootballHub.Controllers
                 {
                     UserName = loginVM.UserName,
                 };
-               var result =  await _signInManager.PasswordSignInAsync(loginVM.UserName, loginVM.Password, false, false);
+               var result =  await _signInManager.PasswordSignInAsync(loginVM.UserName, loginVM.Password, true, false);
                 if(result.Succeeded)
                 {
                     //Temporary code to create superuser

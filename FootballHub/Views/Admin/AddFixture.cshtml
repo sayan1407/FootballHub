@@ -1,0 +1,46 @@
+﻿@model FixtureVM
+
+<div class="offset-3 col-6 border">
+    <form method="post">
+        <div class="bg-info text-white  h1 p-3">Add Fixtures</div>
+        <div class="offset-2 col-8 mb-3">
+            <label asp-for="@Model.Fixture.Opponent" class="form-label"></label>
+            <select asp-for="@Model.Fixture.OpponentId" asp-items="@Model.Opponents" class="selectopponent form-control" data-live-search="true" title="Choose one...">
+                <option selected disabled>Select Opponent</option>
+            </select>
+            <span asp-validation-for="@Model.Fixture.Opponent" class="text-danger"></span>
+        </div>
+        <div class="offset-2 col-8 mb-3">
+            <label asp-for="@Model.Fixture.MatchTime" class="form-label"></label>
+            <input asp-for="@Model.Fixture.MatchTime" class="form-control" />
+            <span asp-validation-for="@Model.Fixture.MatchTime" class="text-danger"></span>
+        </div>
+        <div class="offset-2 col-8 mb-3">
+            <label asp-for="@Model.Fixture.MatchType" class="form-label"></label>
+            <select asp-for="@Model.Fixture.MatchType" asp-items="@Model.MatchTypes" class="form-select">
+                <option selected disabled>Select Match Type</option>
+            </select>
+            <span asp-validation-for="@Model.Fixture.MatchType" class="text-danger"></span>
+        </div>
+        <div class="offset-2 col-8 mb-3">
+            <label asp-for="@Model.Fixture.Venue" class="form-label"></label>
+            <input asp-for="@Model.Fixture.Venue" class="form-control" />
+            <span asp-validation-for="@Model.Fixture.Venue" class="text-danger"></span>
+        </div>
+        <div class="offset-2 col-8 mb-3">
+            <input type="submit" class="btn btn-primary" />
+        </div>
+
+    </form>
+    
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.selectopponent').selectpicker();
+        })
+    </script>
+   
+}
+

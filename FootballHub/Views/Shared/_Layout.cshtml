@@ -11,13 +11,15 @@
     <link rel="stylesheet" href="~/FootballHub.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="//cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css" />
     <link rel="stylesheet" href="~/css/typehead.css" />
+    <!-- Bootstrap Select CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="~/Logo/Real-Madrid-logo.png" alt="Avatar Logo" style="width:80px;" class="rounded-pill">
+                    <img src="~/Logo/Real-Madrid-logo.png" alt="Real Madrid Logo" style="width:80px;" class="rounded-pill">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +34,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="News">News</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="GetFixtures">Fixtures</a>
+                        </li>
                         @if(User.IsInRole("SUPERUSER"))
                         {
                             <li class="nav-item dropdown">
@@ -40,6 +45,8 @@
                                     <li><a class="dropdown-item" asp-controller="Admin" asp-action="AddPlayer">Add Player</a></li>
                                     <li><a class="dropdown-item" asp-controller="Admin" asp-action="UpdatePlayer">Update Player Data</a></li>
                                     <li><a class="dropdown-item" asp-controller="Admin" asp-action="AddNews">Add News</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="AddOpponent">Add Opponents</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="AddFixture">Add Fixtures</a></li>
 
                                 </ul>
                             </li>
@@ -94,8 +101,12 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="//cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
+    @await Html.PartialAsync("_ValidationScriptsPartial.cshtml")
 </body>
 </html>
+
 
 

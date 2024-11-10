@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Fixture>
+
+
+
+    @foreach(var obj in Model)
+    {
+      <div class="row p-4 border mt-3 bg-light">
+        <div class="offset-1 col-2">
+            <img src="~/OpponentLogo/@obj.Opponent.Logo" />
+            <div class="h5 ps-2">@obj.Opponent.ClubName</div>
+        </div>
+        <div class="offset-1 mt-2 col-3">
+            <!--<div class="h5 text-center">00:30</div>
+              <div class="h5 text-center">Nov 5,2024</div>
+              <div class="h5 text-center">Madrid, Spain</div>-->
+            <div class="h5 text-center ml-3">@obj.MatchTime.ToString("HH:mm")  @obj.MatchTime.ToString("MMM dd, yyyy")</div>
+
+            <div class="h1 text-center">VS</div>
+            <div class="h5 text-center mt-4">@obj.Venue</div>
+        </div>
+        <div class="offset-1 col-2">
+            <img src="~/Logo/Real-Madrid-logo.png" width="120" height="80" />
+            <div class="h5">Real Madrid</div>
+        </div>
+      </div>
+        
+    }
+    

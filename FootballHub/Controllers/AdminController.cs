@@ -171,6 +171,58 @@ namespace FootballHub.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public IActionResult AddOpponent()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddOpponent(Opponent opponent, IFormFile logo)
+        {
+            string rootpath = _host.WebRootPath;
+            if (opponent == null)
+                return View(opponent);
+            if(!ModelState.IsValid)
+                return View(opponent);
+            if(logo != null)
+            {
+                string fileName = Guid.NewGuid() + "_"+logo.FileName;
+                string filePath = Path.Combine(rootpath, "OpponentLogo", fileName);
+                using(var stream = new FileStream(filePath,FileMode.Create))
+                {
+                    logo.CopyTo(stream);
+                }
+                opponent.Logo = fileName;
+            }
+            _db.Opponents.Add(opponent);
+            _db.SaveChanges();
+            return RedirectToAction("Index","Home");
+        }
+        public IActionResult AddFixture()
+        {
+            var fixtureVM = new FixtureVM()
+            {
+                Opponents = _db.Opponents.Select( o => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
+                {
+                    Text = o.ClubName,
+                    Value = o.Id.ToString()
+                }).ToList()
+            };
+            return View(fixtureVM);
+        }
+        [HttpPost]
+        public IActionResult AddFixture(FixtureVM fixtureVM)
+        {
+            if(fixtureVM == null)
+                return View(fixtureVM);
+            if(!ModelState.IsValid) 
+                return View(fixtureVM);
+
+            var fixture = fixtureVM.Fixture;
+            _db.Fixtures.Add(fixture);
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
 
     }
 }
